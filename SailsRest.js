@@ -4,7 +4,7 @@
 ---------------------------------------------------------------*/
 
 var Errors = require('waterline-errors').adapter,
-  restify = require('restify'),
+  restifySuperagent = require('./restify.superagent'),
   url = require('url'),
   _ = require('lodash'),
   _i = require('underscore.inflections'),
@@ -349,15 +349,14 @@ module.exports = (function() {
 
       config = this.defaults ? _.extend({}, this.defaults, connection) : connection;
       config.methods = this.defaults ? _.extend({}, this.defaults.methods, connection.methods) : connection.methods;
-      clientMethod = _s.join('', 'create', _s.capitalize(config.type), 'Client');
 
-      if (!_.isFunction(restify[clientMethod])) {
-        throw new Error('Invalid type provided: ' + config.type);
+      if (config.type !== 'json') {
+        throw "Type " + config.type + " is not supported";
       }
 
       instance = {
         config: config,
-        connection: restify[clientMethod]({
+        connection: restifySuperagent({
           url: url.format({
             protocol: config.protocol,
             hostname: config.hostname,
