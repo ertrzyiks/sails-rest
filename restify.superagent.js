@@ -2,7 +2,7 @@ var request = require('superagent');
 
 var standardCallback = function (cb) {
   return function (err, res) {
-    cb(err, null, res, res.body);
+    cb(err, null, res, res && res.body || {});
   };
 };
 

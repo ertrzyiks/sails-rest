@@ -276,7 +276,7 @@ module.exports = (function() {
       var cb = function(err, req, res, data) {
         var restError,
             // check if response code is in 4xx or 5xx range
-            responseErrorCode = res && /^(4|5)\d+$/.test(res.statusCode.toString());
+            responseErrorCode = res && /^(4|5)\d+$/.test(res.status.toString());
 
         if (err && ( res === undefined || res === null || responseErrorCode ) ) {
           restError = new RestError(err.message, {originalError: err, data: data});
